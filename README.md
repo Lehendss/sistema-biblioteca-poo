@@ -3,31 +3,31 @@
 ## Datos del estudiante
 
 - Estudiante: Edisson Carchi
-- Matricula: 2025372938
-- Asignatura: Programacion Orientada a Objetos
+- Matrícula: 2025372938
+- Asignatura: Programación Orientada a Objetos
 - Lenguaje: Python 3.9+
-- Repositorio publico: https://github.com/Lehendss/sistema-biblioteca-poo
+- Repositorio público: https://github.com/Lehendss/sistema-biblioteca-poo
 
 ## Caso seleccionado
 
-Se implemento un **sistema de biblioteca**. La biblioteca registra materiales, usuarios y prestamos. El ejemplo permite demostrar encapsulacion, getters/setters, herencia y composicion sin depender de librerias externas.
+Se implementó un **sistema de biblioteca**. La biblioteca registra materiales, usuarios y préstamos. El ejemplo permite demostrar encapsulación, getters/setters, herencia y composición sin depender de librerías externas.
 
 ## Relacion con la consigna
 
-### Semana 1: clases, objetos, encapsulacion y UML
+### Semana 1: clases, objetos, encapsulación y UML
 
 - `Persona` y `Material` son clases base.
 - Sus atributos se almacenan como privados usando nombres con doble guion bajo, por ejemplo `__nombre` y `__titulo`.
 - Los atributos se consultan y modifican mediante propiedades `@property`, que funcionan como getters y setters.
-- `Biblioteca` y `Catalogo` representan objetos que se crean y utilizan desde `main.py`.
+- `Biblioteca` y `Catálogo` representan objetos que se crean y utilizan desde `main.py`.
 
-### Semana 2: herencia y composicion
+### Semana 2: herencia y composición
 
 - `Usuario` y `Bibliotecario` heredan de `Persona`.
 - `Libro` y `Revista` heredan de `Material`.
-- `Biblioteca` compone un `Catalogo` y una coleccion de objetos `Prestamo`.
-- `Prestamo` compone referencias a un `Usuario` y un `Material`.
-- La composicion se observa porque el catalogo y los prestamos son administrados por la biblioteca y participan en sus operaciones.
+- `Biblioteca` compone un `Catálogo` y una colección de objetos `Préstamo`.
+- `Préstamo` compone referencias a un `Usuario` y un `Material`.
+- La composición se observa porque el catálogo y los préstamos son administrados por la biblioteca y participan en sus operaciones.
 
 ## Estructura
 
@@ -49,7 +49,7 @@ semana1/
     └── test_biblioteca.py
 ```
 
-## Ejecucion
+## Ejecución
 
 Desde la carpeta `semana1`:
 
@@ -63,28 +63,28 @@ No se requieren paquetes externos.
 ## Funcionamiento esperado
 
 1. Se crea una biblioteca.
-2. Se agregan un libro y una revista al catalogo.
+2. Se agregan un libro y una revista al catálogo.
 3. Se registra un usuario y un bibliotecario.
 4. El usuario solicita el libro.
-5. La biblioteca crea un prestamo y marca el material como no disponible.
+5. La biblioteca crea un préstamo y marca el material como no disponible.
 6. Se devuelve el libro y vuelve a estar disponible.
 7. Se intenta devolverlo nuevamente para demostrar el control de errores.
 
-## Explicacion de diseno
+## Explicación del diseño
 
-`Material` encapsula el estado `disponible`; el codigo externo no modifica directamente ese atributo. `Libro` y `Revista` reutilizan el comportamiento comun de `Material` y agregan datos propios. `Persona` concentra los datos comunes de identificacion y contacto, mientras que sus subclases expresan roles distintos.
+`Material` encapsula el estado `disponible`; el código externo no modifica directamente ese atributo. `Libro` y `Revista` reutilizan el comportamiento común de `Material` y agregan datos propios. `Persona` concentra los datos comunes de identificación y contacto, mientras que sus subclases expresan roles distintos.
 
-`Biblioteca` es el punto de coordinacion de las operaciones. Su metodo `prestar` valida usuario y material, cambia el estado del material, crea un `Prestamo` y lo guarda. Su metodo `devolver` busca el prestamo activo, actualiza la fecha y libera el material. Asi se evita que `main.py` manipule directamente las colecciones internas.
+`Biblioteca` es el punto de coordinación de las operaciones. Su método `prestar` valida usuario y material, cambia el estado del material, crea un `Préstamo` y lo guarda. Su método `devolver` busca el préstamo activo, actualiza la fecha y libera el material. Así se evita que `main.py` manipule directamente las colecciones internas.
 
 ## UML
 
-El diagrama completo esta en `docs/diagrama_uml.puml` y `docs/diagrama_uml.md`. Relaciones principales:
+El diagrama completo está en `docs/diagrama_uml.puml` y `docs/diagrama_uml.md`. Relaciones principales:
 
 - Herencia: `Persona <|-- Usuario`, `Persona <|-- Bibliotecario`.
 - Herencia: `Material <|-- Libro`, `Material <|-- Revista`.
-- Composicion: `Biblioteca *-- Catalogo` y `Biblioteca *-- Prestamo`.
-- Asociacion: `Prestamo --> Usuario` y `Prestamo --> Material`.
+- Composición: `Biblioteca *-- Catálogo` y `Biblioteca *-- Préstamo`.
+- Asociación: `Préstamo --> Usuario` y `Préstamo --> Material`.
 
-## Evidencia y autoria
+## Evidencia y autoría
 
-La memoria Word contiene esta explicacion, el enlace de GitHub como campo editable y el UML en formato fuente. Antes de entregar, el estudiante debe publicar el codigo en un repositorio propio, reemplazar los campos pendientes y conservar commits que pueda explicar.
+La memoria en Word presenta la explicación de la solución, los datos del estudiante, el enlace público al repositorio de GitHub y la referencia al diagrama UML. El código fuente, las pruebas y los diagramas se encuentran organizados en este repositorio para su revisión y ejecución.
