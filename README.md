@@ -2,8 +2,8 @@
 
 ## Datos del estudiante
 
-- Estudiante: `[COMPLETAR]`
-- Matricula: `[COMPLETAR]`
+- Estudiante: Edisson Carchi
+- Matricula: `[PENDIENTE DE CONFIRMAR]`
 - Asignatura: Programacion Orientada a Objetos
 - Lenguaje: Python 3.9+
 - Repositorio publico: https://github.com/Lehendss/sistema-biblioteca-poo
