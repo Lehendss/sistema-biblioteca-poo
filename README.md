@@ -12,12 +12,12 @@
 
 Se implementó un **sistema de biblioteca**. La biblioteca registra materiales, usuarios y préstamos. El ejemplo permite demostrar encapsulación, getters/setters, herencia y composición sin depender de librerías externas.
 
-## Relacion con la consigna
+## Relación con la consigna
 
 ### Semana 1: clases, objetos, encapsulación y UML
 
 - `Persona` y `Material` son clases base.
-- Sus atributos se almacenan como privados usando nombres con doble guion bajo, por ejemplo `__nombre` y `__titulo`.
+- Sus atributos se almacenan como privados usando nombres con doble guión bajo, por ejemplo `__nombre` y `__titulo`.
 - Los atributos se consultan y modifican mediante propiedades `@property`, que funcionan como getters y setters.
 - `Biblioteca` y `Catálogo` representan objetos que se crean y utilizan desde `main.py`.
 
