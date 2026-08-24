@@ -1,0 +1,40 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}{\f1 Consolas;}}
+\fs28\b Actividad Semanas 1 y 2: POO, UML, Herencia y Composicion\b0\fs22\par
+\par
+\b Datos del estudiante\b0\par
+Estudiante: [COMPLETAR]\par
+Matricula: [COMPLETAR]\par
+Asignatura: Programacion Orientada a Objetos\par
+Lenguaje: Python 3.9+\par
+Repositorio publico: https://github.com/Lehendss/sistema-biblioteca-poo\par
+\par
+\b 1. Descripcion de la solucion\b0\par
+Se implemento un sistema de biblioteca que registra materiales, usuarios y prestamos. Se selecciono este caso porque permite demostrar encapsulacion, getters y setters, herencia y composicion en un flujo funcional.\par
+\par
+\b 2. Semana 1: clases y encapsulacion\b0\par
+Las clases Persona y Material son clases base. Sus atributos se almacenan privados con doble guion bajo y se consultan o modifican mediante propiedades @property, que funcionan como getters y setters. La validacion evita identificaciones vacias, correos invalidos, titulos vacios y estados incorrectos.\par
+\par
+\b 3. Semana 2: herencia\b0\par
+Usuario y Bibliotecario heredan de Persona. Libro y Revista heredan de Material. Las subclases reutilizan el comportamiento comun y agregan datos propios: Libro incorpora autor e ISBN, mientras Revista incorpora numero de edicion.\par
+\par
+\b 4. Composicion\b0\par
+Biblioteca compone un Catalogo, un diccionario de usuarios y una coleccion de prestamos. El Catalogo administra los materiales y Prestamo relaciona un Usuario con un Material. El metodo prestar valida, cambia el estado del material, crea el prestamo y lo registra; devolver cierra el prestamo y libera el material.\par
+\par
+\b 5. Diagrama UML\b0\par
+Relaciones principales:\par
+Persona <|-- Usuario y Persona <|-- Bibliotecario (herencia).\par
+Material <|-- Libro y Material <|-- Revista (herencia).\par
+Biblioteca *-- Catalogo y Biblioteca *-- Prestamo (composicion).\par
+Prestamo --> Usuario y Prestamo --> Material (asociacion).\par
+El codigo fuente completo del diagrama se encuentra en docs/diagrama_uml.puml y docs/diagrama_uml.md.\par
+\par
+\b 6. Ejecucion\b0\par
+Desde la carpeta del proyecto:\par
+\f1 python3 -m src.main\par
+python3 -m unittest discover -s tests -v\f0\par
+No se requieren paquetes externos.\par
+\par
+\b 7. Conclusion\b0\par
+La solucion separa responsabilidades: los materiales controlan su disponibilidad, las personas mantienen sus datos y la biblioteca coordina las operaciones. La herencia evita duplicar atributos comunes y la composicion permite que la biblioteca administre el catalogo y los prestamos. El uso de atributos privados y validaciones protege el estado interno y facilita que el codigo pueda ampliarse con nuevos tipos de materiales o roles sin modificar el flujo principal.\par
+}

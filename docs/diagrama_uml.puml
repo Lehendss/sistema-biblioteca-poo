@@ -1,0 +1,71 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Persona {
+  - identificacion: str
+  - nombre: str
+  - correo: str
+  + descripcion(): str
+}
+
+class Usuario {
+  - prestamos: List[Prestamo]
+  + agregar_prestamo(prestamo): void
+}
+
+class Bibliotecario {
+  + registrar_material(biblioteca, material): void
+}
+
+class Material {
+  - codigo: str
+  - titulo: str
+  - disponible: bool
+  + prestar(): void
+  + devolver(): void
+}
+
+class Libro {
+  - autor: str
+  - isbn: str
+}
+
+class Revista {
+  - numero_edicion: int
+}
+
+class Catalogo {
+  - materiales: Dict[str, Material]
+  + agregar(material): void
+  + buscar(codigo): Material
+}
+
+class Prestamo {
+  - fecha_prestamo: date
+  - fecha_devolucion: date
+  + activo: bool
+  + cerrar(): void
+}
+
+class Biblioteca {
+  - nombre: str
+  - catalogo: Catalogo
+  - usuarios: Dict[str, Usuario]
+  - prestamos: List[Prestamo]
+  + registrar_material(material): void
+  + registrar_usuario(usuario): void
+  + prestar(codigo, identificacion): Prestamo
+  + devolver(codigo): Prestamo
+}
+
+Persona <|-- Usuario
+Persona <|-- Bibliotecario
+Material <|-- Libro
+Material <|-- Revista
+Biblioteca *-- Catalogo
+Biblioteca *-- Prestamo
+Prestamo --> Usuario
+Prestamo --> Material
+Usuario "1" o-- "0..*" Prestamo
+Catalogo "1" o-- "0..*" Material
+@enduml
