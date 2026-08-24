@@ -35,6 +35,7 @@ Se implementó un **sistema de biblioteca**. La biblioteca registra materiales, 
 semana1/
 ├── README.md
 ├── memoria_entrega_poo.docx
+├── memoria_entrega_poo.html
 ├── docs/
 │   ├── diagrama_uml.md
 │   └── diagrama_uml.puml

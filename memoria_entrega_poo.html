@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad Semanas 1 y 2 - POO</title>
+  <style>
+    @page { size: A4; margin: 2cm; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #222; font-size: 11pt; line-height: 1.45; }
+    h1 { color: #17365d; font-size: 23pt; margin-bottom: 4pt; }
+    h2 { color: #1f4e79; border-bottom: 1px solid #9fbad0; padding-bottom: 4pt; margin-top: 22pt; }
+    h3 { color: #365f91; margin-top: 16pt; }
+    .subtitle { color: #666; font-size: 12pt; margin-top: 0; }
+    .cover { text-align: center; margin-top: 100pt; margin-bottom: 80pt; }
+    .cover h1 { font-size: 25pt; }
+    .cover .line { width: 80%; border-top: 3px solid #1f4e79; margin: 28pt auto; }
+    table { border-collapse: collapse; width: 100%; margin: 10pt 0 16pt; }
+    th { background: #1f4e79; color: white; text-align: left; }
+    th, td { border: 1px solid #b7c9d6; padding: 7pt; vertical-align: top; }
+    tr:nth-child(even) { background: #f3f7fa; }
+    code { font-family: Consolas, "Courier New", monospace; color: #7a1f1f; }
+    pre { background: #f4f6f8; border: 1px solid #d5dce3; padding: 12pt; font-family: Consolas, "Courier New", monospace; font-size: 8.5pt; white-space: pre-wrap; }
+    .note { background: #eef5fb; border-left: 4px solid #1f4e79; padding: 10pt 12pt; }
+    .footer { color: #666; font-size: 9pt; margin-top: 30pt; border-top: 1px solid #ccc; padding-top: 6pt; }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <h1>Actividad de las semanas 1 y 2</h1>
+    <p class="subtitle">Programación Orientada a Objetos, UML, herencia y composición</p>
+    <div class="line"></div>
+    <table>
+      <tr><th>Dato</th><th>Información</th></tr>
+      <tr><td>Estudiante</td><td>Edisson Carchi</td></tr>
+      <tr><td>Matrícula</td><td>2025372938</td></tr>
+      <tr><td>Lenguaje</td><td>Python 3.9 o superior</td></tr>
+      <tr><td>Repositorio</td><td>https://github.com/Lehendss/sistema-biblioteca-poo</td></tr>
+    </table>
+  </section>
+
+  <h2>1. Descripción de la solución</h2>
+  <p>Se desarrolló un sistema de biblioteca que permite registrar materiales, usuarios y préstamos. Se seleccionó este caso porque permite demostrar los principios fundamentales de la programación orientada a objetos mediante un flujo funcional y fácil de explicar.</p>
+  <p>La biblioteca administra un catálogo con libros y revistas, registra usuarios y controla el préstamo y la devolución de materiales.</p>
+
+  <h2>2. Semana 1: clases, objetos y encapsulación</h2>
+  <p>Las clases <code>Persona</code> y <code>Material</code> son las clases base del modelo. Sus atributos se almacenan como privados mediante nombres con doble guión bajo. El acceso se controla mediante propiedades <code>@property</code>, que funcionan como getters y setters.</p>
+  <table>
+    <tr><th>Clase</th><th>Responsabilidad</th><th>Encapsulación</th></tr>
+    <tr><td><code>Persona</code></td><td>Representar los datos comunes de una persona.</td><td>Identificación, nombre y correo privados con validaciones.</td></tr>
+    <tr><td><code>Material</code></td><td>Representar un recurso prestable.</td><td>Código, título y disponibilidad privados.</td></tr>
+    <tr><td><code>Biblioteca</code></td><td>Coordinar el catálogo, usuarios y préstamos.</td><td>Sus colecciones internas no se exponen directamente.</td></tr>
+  </table>
+
+  <h2>3. Semana 2: herencia y composición</h2>
+  <h3>Herencia</h3>
+  <p><code>Usuario</code> y <code>Bibliotecario</code> heredan de <code>Persona</code>. <code>Libro</code> y <code>Revista</code> heredan de <code>Material</code>. De esta forma, las subclases reutilizan atributos y métodos comunes y agregan sus características específicas.</p>
+  <h3>Composición</h3>
+  <p><code>Biblioteca</code> compone un objeto <code>Catalogo</code> y una colección de objetos <code>Prestamo</code>. Cada préstamo relaciona un <code>Usuario</code> con un <code>Material</code>. La biblioteca coordina el ciclo completo: registrar, prestar y devolver.</p>
+  <table>
+    <tr><th>Relación</th><th>Tipo</th><th>Descripción</th></tr>
+    <tr><td><code>Persona</code> -&gt; <code>Usuario</code></td><td>Herencia</td><td>Un usuario es una persona con capacidad de solicitar materiales.</td></tr>
+    <tr><td><code>Material</code> -&gt; <code>Libro</code></td><td>Herencia</td><td>Un libro es un material con autor e ISBN.</td></tr>
+    <tr><td><code>Biblioteca</code> -&gt; <code>Catalogo</code></td><td>Composición</td><td>La biblioteca administra su catálogo de materiales.</td></tr>
+    <tr><td><code>Prestamo</code> -&gt; <code>Usuario</code> y <code>Material</code></td><td>Asociación</td><td>El préstamo registra quién recibe qué material.</td></tr>
+  </table>
+
+  <h2>4. Diagrama UML</h2>
+  <p>El diagrama completo se encuentra también en los archivos <code>docs/diagrama_uml.puml</code> y <code>docs/diagrama_uml.md</code>.</p>
+  <pre>
+Persona
+├── Usuario
+└── Bibliotecario
+
+Material
+├── Libro
+└── Revista
+
+Biblioteca ◆── Catalogo ◆── Material
+Biblioteca ◆── Prestamo ── Usuario
+                         └─ Material
+
+◆ Composición       ── Asociación       △ Herencia
+  </pre>
+  <table>
+    <tr><th>Relación UML</th><th>Implementación</th></tr>
+    <tr><td>Persona &lt;|-- Usuario</td><td><code>class Usuario(Persona)</code></td></tr>
+    <tr><td>Persona &lt;|-- Bibliotecario</td><td><code>class Bibliotecario(Persona)</code></td></tr>
+    <tr><td>Material &lt;|-- Libro</td><td><code>class Libro(Material)</code></td></tr>
+    <tr><td>Material &lt;|-- Revista</td><td><code>class Revista(Material)</code></td></tr>
+    <tr><td>Biblioteca *-- Catalogo</td><td>La biblioteca crea y administra su catálogo.</td></tr>
+    <tr><td>Biblioteca *-- Prestamo</td><td>La biblioteca registra los préstamos realizados.</td></tr>
+  </table>
+
+  <h2>5. Funcionamiento</h2>
+  <ol>
+    <li>Se crea una biblioteca.</li>
+    <li>Se registran un libro y una revista.</li>
+    <li>Se registra un usuario y un bibliotecario.</li>
+    <li>El usuario solicita un libro.</li>
+    <li>La biblioteca crea el préstamo y marca el libro como no disponible.</li>
+    <li>Se devuelve el libro y vuelve a estar disponible.</li>
+    <li>Se controla el intento de devolver nuevamente un libro sin préstamo activo.</li>
+  </ol>
+  <div class="note"><strong>Ejecución:</strong> desde la carpeta del proyecto se puede ejecutar <code>python3 -m src.main</code> y verificar el funcionamiento con <code>python3 -m unittest discover -s tests -v</code>.</div>
+
+  <h2>6. Conclusión</h2>
+  <p>La solución separa responsabilidades: los materiales controlan su disponibilidad, las personas mantienen sus datos y la biblioteca coordina las operaciones. La herencia evita duplicar atributos comunes y la composición permite que la biblioteca administre el catálogo y los préstamos. El uso de atributos privados y validaciones protege el estado interno y facilita ampliar el sistema con nuevos tipos de materiales o roles.</p>
+
+  <p class="footer">Documento preparado para la actividad de Programación Orientada a Objetos. El código fuente, las pruebas y los diagramas UML están disponibles en el repositorio público indicado.</p>
+</body>
+</html>
