@@ -29,6 +29,13 @@ Se implementó un **sistema de biblioteca**. La biblioteca registra materiales, 
 - `Préstamo` compone referencias a un `Usuario` y un `Material`.
 - La composición se observa porque el catálogo y los préstamos son administrados por la biblioteca y participan en sus operaciones.
 
+### Semana 3: polimorfismo, interfaces y clases abstractas
+
+- `Cliente` es una clase abstracta de Python (`ABC`) que declara `calcular_descuento()`.
+- `ClienteMayorista` y `ClienteMinorista` heredan de `Cliente` y sobrescriben ese método con reglas distintas.
+- `Venta` recibe cualquier objeto `Cliente` y calcula `descuento` mediante la abstracción común, sin identificar el tipo concreto.
+- Reglas utilizadas: mayorista 15 % desde 1000 y 10 % por debajo; minorista 5 % desde 500 y 0 % por debajo.
+
 ## Estructura
 
 ```text
@@ -42,10 +49,12 @@ semana1/
 ├── src/
 │   ├── __init__.py
 │   ├── biblioteca.py
+│   ├── cliente.py
 │   ├── main.py
 │   ├── material.py
 │   ├── persona.py
-│   └── prestamo.py
+│   ├── prestamo.py
+│   └── venta.py
 └── tests/
     └── test_biblioteca.py
 ```
@@ -70,12 +79,15 @@ No se requieren paquetes externos.
 5. La biblioteca crea un préstamo y marca el material como no disponible.
 6. Se devuelve el libro y vuelve a estar disponible.
 7. Se intenta devolverlo nuevamente para demostrar el control de errores.
+8. Se calculan ventas para clientes mayoristas y minoristas usando la misma operación polimórfica.
 
 ## Explicación del diseño
 
 `Material` encapsula el estado `disponible`; el código externo no modifica directamente ese atributo. `Libro` y `Revista` reutilizan el comportamiento común de `Material` y agregan datos propios. `Persona` concentra los datos comunes de identificación y contacto, mientras que sus subclases expresan roles distintos.
 
 `Biblioteca` es el punto de coordinación de las operaciones. Su método `prestar` valida usuario y material, cambia el estado del material, crea un `Préstamo` y lo guarda. Su método `devolver` busca el préstamo activo, actualiza la fecha y libera el material. Así se evita que `main.py` manipule directamente las colecciones internas.
+
+En la extensión de la semana 3, `Venta` trabaja con una referencia de tipo `Cliente`. Al solicitar `venta.descuento`, Python ejecuta automáticamente la versión sobrescrita correspondiente al objeto real. La misma operación funciona para `ClienteMayorista` y `ClienteMinorista`, lo que demuestra polimorfismo y evita condicionales para identificar tipos.
 
 ## UML
 
@@ -85,6 +97,8 @@ El diagrama completo está en `docs/diagrama_uml.puml` y `docs/diagrama_uml.md`.
 - Herencia: `Material <|-- Libro`, `Material <|-- Revista`.
 - Composición: `Biblioteca *-- Catálogo` y `Biblioteca *-- Préstamo`.
 - Asociación: `Préstamo --> Usuario` y `Préstamo --> Material`.
+- Abstracción y polimorfismo: `Cliente` define `calcular_descuento()` y sus subclases lo sobrescriben.
+- Composición: `Venta` contiene una referencia a la abstracción `Cliente`.
 
 ## Evidencia y autoría
 

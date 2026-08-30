@@ -77,6 +77,28 @@ classDiagram
         +devolver(codigo) Prestamo
     }
 
+    class Cliente {
+        <<abstract>>
+        -str __identificacion
+        -str __nombre
+        +calcular_descuento(subtotal) float
+    }
+
+    class ClienteMayorista {
+        +calcular_descuento(subtotal) float
+    }
+
+    class ClienteMinorista {
+        +calcular_descuento(subtotal) float
+    }
+
+    class Venta {
+        -Cliente __cliente
+        -float __subtotal
+        +descuento float
+        +total float
+    }
+
     Persona <|-- Usuario
     Persona <|-- Bibliotecario
     Material <|-- Libro
@@ -87,4 +109,7 @@ classDiagram
     Prestamo --> Material
     Usuario "1" o-- "0..*" Prestamo
     Catalogo "1" o-- "0..*" Material
+    Cliente <|-- ClienteMayorista
+    Cliente <|-- ClienteMinorista
+    Venta *-- Cliente
 ```

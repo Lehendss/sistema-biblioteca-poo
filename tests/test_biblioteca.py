@@ -1,8 +1,10 @@
 import unittest
 
 from src.biblioteca import Biblioteca
+from src.cliente import ClienteMayorista, ClienteMinorista
 from src.material import Libro, Revista
 from src.persona import Usuario
+from src.venta import Venta
 
 
 class BibliotecaTestCase(unittest.TestCase):
@@ -43,6 +45,26 @@ class BibliotecaTestCase(unittest.TestCase):
             Usuario("", "Nombre", "nombre@example.com")
         with self.assertRaises(ValueError):
             Libro("L002", "Titulo", "Autor", "")
+
+    def test_clientes_implementan_la_misma_abstraccion(self) -> None:
+        clientes = (
+            ClienteMayorista("m001", "Mayorista"),
+            ClienteMinorista("c001", "Minorista"),
+        )
+        descuentos = [cliente.calcular_descuento(1000) for cliente in clientes]
+        self.assertEqual([150.0, 50.0], descuentos)
+
+    def test_venta_aplica_polimorfismo_sin_condicionales(self) -> None:
+        mayorista = Venta(ClienteMayorista("m001", "Mayorista"), 1500)
+        minorista = Venta(ClienteMinorista("c001", "Minorista"), 600)
+        self.assertEqual(225.0, mayorista.descuento)
+        self.assertEqual(30.0, minorista.descuento)
+        self.assertEqual(1275.0, mayorista.total)
+        self.assertEqual(570.0, minorista.total)
+
+    def test_no_se_acepta_subtotal_negativo(self) -> None:
+        with self.assertRaises(ValueError):
+            Venta(ClienteMinorista("c001", "Minorista"), -1)
 
 
 if __name__ == "__main__":

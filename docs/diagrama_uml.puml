@@ -58,6 +58,27 @@ class Biblioteca {
   + devolver(codigo): Prestamo
 }
 
+abstract class Cliente {
+  - identificacion: str
+  - nombre: str
+  + calcular_descuento(subtotal): float
+}
+
+class ClienteMayorista {
+  + calcular_descuento(subtotal): float
+}
+
+class ClienteMinorista {
+  + calcular_descuento(subtotal): float
+}
+
+class Venta {
+  - cliente: Cliente
+  - subtotal: float
+  + descuento: float
+  + total: float
+}
+
 Persona <|-- Usuario
 Persona <|-- Bibliotecario
 Material <|-- Libro
@@ -68,4 +89,7 @@ Prestamo --> Usuario
 Prestamo --> Material
 Usuario "1" o-- "0..*" Prestamo
 Catalogo "1" o-- "0..*" Material
+Cliente <|-- ClienteMayorista
+Cliente <|-- ClienteMinorista
+Venta *-- Cliente
 @enduml

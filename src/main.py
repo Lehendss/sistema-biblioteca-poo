@@ -1,6 +1,8 @@
 from .biblioteca import Biblioteca
+from .cliente import ClienteMayorista, ClienteMinorista
 from .material import Libro, Revista
 from .persona import Bibliotecario, Usuario
+from .venta import Venta
 
 
 def ejecutar_demo() -> None:
@@ -29,6 +31,18 @@ def ejecutar_demo() -> None:
         biblioteca.devolver("L001")
     except ValueError as error:
         print(f"Control de error: {error}")
+
+    print("\nCalculo polimorfico de descuentos:")
+    ventas = (
+        Venta(ClienteMayorista("M001", "Distribuidora Andina"), 1500),
+        Venta(ClienteMinorista("C001", "Maria Lopez"), 600),
+        Venta(ClienteMinorista("C002", "Pedro Gomez"), 200),
+    )
+    for venta in ventas:
+        print(
+            f"{venta.cliente.nombre}: subtotal=${venta.subtotal:.2f}, "
+            f"descuento=${venta.descuento:.2f}, total=${venta.total:.2f}"
+        )
 
 
 if __name__ == "__main__":
