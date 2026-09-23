@@ -1,40 +1,93 @@
 import argparse
+
 import flet as ft
 
 from .catalogo_productos import Producto, catalogo_demo
 from .material import Libro, Revista
 
+HEADER_BG = "#24292F"
+HEADER_TEXT = "#FFFFFF"
+CANVAS = "#F6F8FA"
+SURFACE = "#FFFFFF"
+BORDER = "#D0D7DE"
+TEXT = "#1F2328"
+MUTED = "#656D76"
+ACCENT = "#0969DA"
+SUCCESS = "#1A7F37"
+DANGER = "#CF222E"
+
 
 def main(page: ft.Page):
-    page.title = "Biblioteca | Catálogo de productos"
+    page.title = "Catálogo"
     page.theme_mode = ft.ThemeMode.LIGHT
-    page.padding = 24
-    page.bgcolor = "#F3F6FA"
+    page.bgcolor = CANVAS
+    page.padding = 0
     page.scroll = ft.ScrollMode.AUTO
+    page.theme = ft.Theme(font_family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif")
+    page.window_width = 1280
+    page.window_height = 800
+    page.window_min_width = 900
+    page.window_min_height = 600
+
     catalogo = catalogo_demo()
     seleccionado = None
 
-    codigo = ft.TextField(label="Código", width=200)
-    titulo = ft.TextField(label="Título", width=400)
-    tipo = ft.Dropdown(label="Tipo", value="Libro", width=180,
-                       options=[ft.dropdown.Option("Libro"), ft.dropdown.Option("Revista")])
-    autor = ft.TextField(label="Autor", width=280)
-    isbn = ft.TextField(label="ISBN", width=220)
-    edicion = ft.TextField(label="Edición", value="1", width=140, visible=False)
-    precio = ft.TextField(label="Precio ($)", width=180)
-    stock = ft.TextField(label="Stock", width=140)
-    for campo in [codigo, titulo, autor, isbn, edicion, precio, stock]:
-        campo.on_change = lambda e: None
-    filtro = ft.TextField(label="Buscar por código o título", width=460)
-    mensaje = ft.Text("Seleccione un producto o complete el formulario para agregar uno.", color="#164E63")
-    resumen = ft.Text()
-    historial = ft.Text(size=12)
-    tabla = ft.DataTable(columns=[ft.DataColumn(ft.Text(t)) for t in
-                         ["Código", "Producto", "Tipo", "Precio", "Stock", "Acción"]], rows=[])
+    def input_field(label, ancho, **kwargs):
+        return ft.TextField(
+            label=label,
+            width=ancho,
+            bgcolor=SURFACE,
+            border_color=BORDER,
+            focused_border_color=ACCENT,
+            color=TEXT,
+            text_size=13,
+            label_style=ft.TextStyle(size=12, color=MUTED),
+            content_padding=ft.padding.symmetric(7, 10),
+            **kwargs,
+        )
+
+    codigo = input_field("Código", 150)
+    titulo = input_field("Título", 340)
+    tipo = ft.Dropdown(
+        label="Tipo",
+        value="Libro",
+        width=130,
+        bgcolor=SURFACE,
+        border_color=BORDER,
+        focused_border_color=ACCENT,
+        text_size=13,
+        label_style=ft.TextStyle(size=12, color=MUTED),
+        options=[ft.dropdown.Option("Libro"), ft.dropdown.Option("Revista")],
+    )
+    autor = input_field("Autor", 240)
+    isbn = input_field("ISBN", 170)
+    edicion = input_field("Edición", 110, value="1", visible=False)
+    precio = input_field("Precio ($)", 150)
+    stock = input_field("Stock", 110)
+    for campo_ui in [codigo, titulo, autor, isbn, edicion, precio, stock]:
+        campo_ui.on_change = lambda e: None
+
+    filtro = input_field("Buscar", 280)
+    mensaje = ft.Text(size=12, color=MUTED)
+    resumen = ft.Text(size=12, color=MUTED)
+    historial = ft.Text(size=11, color=MUTED)
+
+    tabla = ft.DataTable(
+        columns=[ft.DataColumn(ft.Text(t, size=13, weight=ft.FontWeight.W_500, color=TEXT)) for t in
+                 ["Código", "Producto", "Tipo", "Precio", "Stock", ""]],
+        rows=[],
+        border=ft.border.all(1, BORDER),
+        border_radius=6,
+        heading_row_color=CANVAS,
+        heading_text_style=ft.TextStyle(color=TEXT, weight=ft.FontWeight.W_500),
+        data_row_color={ft.ControlState.HOVERED: "#F3F4F6"},
+        divider_thickness=0.5,
+        column_spacing=20,
+    )
 
     def avisar(texto, error=False):
         mensaje.value = texto
-        mensaje.color = "#B91C1C" if error else "#166534"
+        mensaje.color = DANGER if error else SUCCESS
 
     def cambiar_tipo(e=None):
         autor.visible = isbn.visible = tipo.value == "Libro"
@@ -47,25 +100,30 @@ def main(page: ft.Page):
         for p in productos:
             m = p.material
             tabla.rows.append(ft.DataRow(cells=[
-                ft.DataCell(ft.Text(p.codigo)), ft.DataCell(ft.Text(m.titulo)),
-                ft.DataCell(ft.Text("Libro" if isinstance(m, Libro) else "Revista")),
-                ft.DataCell(ft.Text(f"${p.precio:.2f}")), ft.DataCell(ft.Text(str(p.stock))),
-                ft.DataCell(ft.TextButton("Editar " + p.codigo,
-                            on_click=lambda e, c=p.codigo: seleccionar(c)))]))
-        resumen.value = f"{len(productos)} resultados · {len(catalogo.listar())} productos en el catálogo"
-        historial.value = "Últimas operaciones: " + " | ".join(catalogo.historial[-4:])
+                ft.DataCell(ft.Text(p.codigo, size=13, color=TEXT, font_family="SFMono-Regular, Consolas, monospace")),
+                ft.DataCell(ft.Text(m.titulo, size=13, color=TEXT)),
+                ft.DataCell(ft.Text("Libro" if isinstance(m, Libro) else "Revista", size=13, color=MUTED)),
+                ft.DataCell(ft.Text(f"${p.precio:.2f}", size=13, color=TEXT)),
+                ft.DataCell(ft.Text(str(p.stock), size=13, color=TEXT)),
+                ft.DataCell(ft.TextButton("Editar",
+                            on_click=lambda e, c=p.codigo: seleccionar(c),
+                            style=ft.ButtonStyle(color=ACCENT, text_style=ft.TextStyle(size=13)))),
+            ]))
+        resumen.value = f"{len(productos)} resultados · {len(catalogo.listar())} totales"
+        historial.value = "Historial: " + " · ".join(catalogo.historial[-5:])
         page.update()
 
     def limpiar(e=None):
         nonlocal seleccionado
         seleccionado = None
         codigo.disabled = False
-        for campo in [codigo, titulo, autor, isbn, precio, stock]:
-            campo.value = ""
+        for campo_ui in [codigo, titulo, autor, isbn, precio, stock]:
+            campo_ui.value = ""
         tipo.value = "Libro"
         edicion.value = "1"
         actualizar.disabled = eliminar.disabled = True
         agregar.disabled = False
+        avisar("Complete el formulario para agregar un producto.")
         cambiar_tipo()
 
     def seleccionar(c):
@@ -83,7 +141,7 @@ def main(page: ft.Page):
             edicion.value = str(m.numero_edicion)
         actualizar.disabled = eliminar.disabled = False
         agregar.disabled = True
-        avisar(f"Producto {c} cargado para edición.")
+        avisar(f"Producto {c} cargado.")
         cambiar_tipo()
 
     def producto_formulario():
@@ -115,7 +173,7 @@ def main(page: ft.Page):
             else:
                 catalogo.agregar(p)
             limpiar()
-            avisar(f"Producto {p.codigo} {'actualizado' if editar else 'agregado'} correctamente.")
+            avisar(f"Producto {p.codigo} {'actualizado' if editar else 'agregado'}.")
         except ValueError as error:
             avisar(str(error), True)
         refrescar()
@@ -125,28 +183,82 @@ def main(page: ft.Page):
             c = seleccionado
             catalogo.eliminar(c)
             limpiar()
-            avisar(f"Producto {c} eliminado correctamente.")
+            avisar(f"Producto {c} eliminado.")
         except ValueError as error:
             avisar(str(error), True)
         refrescar()
 
-    agregar = ft.ElevatedButton("Agregar", on_click=guardar)
-    actualizar = ft.ElevatedButton("Actualizar", disabled=True, on_click=lambda e: guardar(e, True))
-    eliminar = ft.OutlinedButton("Eliminar", disabled=True, on_click=borrar)
+    estilo_primario = ft.ButtonStyle(
+        bgcolor=ACCENT, color=SURFACE,
+        text_style=ft.TextStyle(size=13, weight=ft.FontWeight.W_500),
+        padding=ft.padding.symmetric(6, 12),
+    )
+    estilo_secundario = ft.ButtonStyle(
+        bgcolor=SURFACE, color=TEXT,
+        side=ft.BorderSide(1, BORDER),
+        text_style=ft.TextStyle(size=13, weight=ft.FontWeight.W_500),
+        padding=ft.padding.symmetric(6, 12),
+    )
+    estilo_peligro = ft.ButtonStyle(
+        color=DANGER,
+        side=ft.BorderSide(1, BORDER),
+        text_style=ft.TextStyle(size=13, weight=ft.FontWeight.W_500),
+        padding=ft.padding.symmetric(6, 12),
+    )
+
+    agregar = ft.ElevatedButton("Agregar", style=estilo_primario, on_click=guardar)
+    actualizar = ft.ElevatedButton("Actualizar", style=estilo_primario, disabled=True, on_click=lambda e: guardar(e, True))
+    eliminar = ft.OutlinedButton("Eliminar", style=estilo_peligro, disabled=True, on_click=borrar)
+    nuevo = ft.TextButton("Limpiar", style=ft.ButtonStyle(color=MUTED, text_style=ft.TextStyle(size=13)), on_click=limpiar)
+
     tipo.on_change = cambiar_tipo
     filtro.on_change = refrescar
     filtro.on_submit = refrescar
-    page.add(
-        ft.Text("Catálogo de productos", size=30, weight=ft.FontWeight.BOLD, color="#17365D"),
-        ft.Text("Biblioteca · Semanas 5 y 6 · Edisson Carchi", size=16),
-        ft.Text("Libros y revistas del modelo anterior. Datos de demostración en memoria; se reinician al abrir una sesión."),
-        ft.Container(ft.Column([
-            ft.Row([codigo, titulo, tipo], wrap=True), ft.Row([autor, isbn, edicion], wrap=True),
-            ft.Row([precio, stock], wrap=True),
-            ft.Row([agregar, actualizar, eliminar, ft.TextButton("Nuevo / limpiar", on_click=limpiar)], wrap=True),
-            mensaje]), padding=20, bgcolor="white", border_radius=12),
-        ft.Row([filtro, ft.OutlinedButton("Listar / buscar", on_click=refrescar)], wrap=True),
-        resumen, ft.Row([tabla], scroll=ft.ScrollMode.AUTO), historial)
+
+    header = ft.Container(
+        content=ft.Row([
+            ft.Icon(ft.Icons.LIBRARY_BOOKS, size=20, color=HEADER_TEXT),
+            ft.Text("Catálogo", size=15, weight=ft.FontWeight.W_600, color=HEADER_TEXT),
+        ], spacing=10, vertical_alignment=ft.CrossAxisAlignment.CENTER),
+        bgcolor=HEADER_BG,
+        padding=ft.padding.symmetric(12, 24),
+    )
+
+    formulario = ft.Container(
+        content=ft.Column([
+            ft.Text("Nuevo producto", size=13, weight=ft.FontWeight.W_600, color=TEXT),
+            ft.Divider(height=1, color=BORDER),
+            ft.Row([codigo, titulo, tipo], wrap=True, spacing=10),
+            ft.Row([autor, isbn, edicion], wrap=True, spacing=10),
+            ft.Row([precio, stock], wrap=True, spacing=10),
+            ft.Row([agregar, actualizar, eliminar, nuevo], spacing=8),
+            mensaje,
+        ], spacing=10),
+        bgcolor=SURFACE,
+        border=ft.border.all(1, BORDER),
+        border_radius=6,
+        padding=16,
+    )
+
+    toolbar = ft.Row([
+        ft.Text("Productos", size=14, weight=ft.FontWeight.W_600, color=TEXT),
+        ft.Row([filtro, ft.OutlinedButton("Buscar", style=estilo_secundario, on_click=refrescar)], spacing=8),
+    ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+
+    tabla_card = ft.Container(
+        content=ft.Column([tabla], scroll=ft.ScrollMode.AUTO, spacing=0),
+        bgcolor=SURFACE,
+        border=ft.border.all(1, BORDER),
+        border_radius=6,
+    )
+
+    contenido = ft.Container(
+        content=ft.Column([formulario, toolbar, tabla_card, resumen, historial], spacing=14),
+        width=1012,
+        margin=ft.margin.symmetric(horizontal=24, vertical=20),
+    )
+
+    page.add(header, ft.Row([contenido], alignment=ft.MainAxisAlignment.CENTER, expand=True))
     refrescar()
 
 
