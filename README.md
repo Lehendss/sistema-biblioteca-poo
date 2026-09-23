@@ -1,5 +1,22 @@
 # Actividad Semanas 1 y 2: POO, UML, Herencia y Composición
 
+## Semanas 5 y 6: catálogo gráfico con Flet
+
+La nueva interfaz reutiliza `Libro` y `Revista` y permite agregar, buscar, listar, actualizar y eliminar productos. Usa `dict`, `set` y `list`, validaciones y manejo de eventos.
+
+Con Python 3.10+ (probado en 3.12), desde la raíz del repositorio:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m src.gui
+```
+
+En Windows: `.venv\Scripts\activate`. Versión web: `python -m src.gui --web --port 8550`.
+
+Consulta las [instrucciones de las semanas 5 y 6](entregas/semanas5y6/README.md) para conocer el uso, las colecciones y la entrega. Los datos son de demostración y se conservan en memoria durante cada sesión.
+
 ## Datos del estudiante
 
 - Estudiante: Edisson Carchi
